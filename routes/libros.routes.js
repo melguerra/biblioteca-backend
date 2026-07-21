@@ -26,4 +26,26 @@ router.post("/", async (req, res) => { //la ruta post lo que hace es recibe los 
     res.status(500).json({ mensaje: "Error al guardar el libro" });
   }
 });
+
+router.put("/:id", async (req, res) => {
+  try {
+    const libroActualizado = await Libro.findByIdAndUpdate(
+      req.params.id,
+      {
+        titulo: req.body.titulo,
+        autor: req.body.autor,
+      },
+      { new: true }
+    );
+
+    if (!libroActualizado) {
+      return res.status(404).json({ mensaje: "Libro no encontrado" });
+    }
+
+    res.json(libroActualizado);
+  } catch (error) {
+    res.status(500).json({ mensaje: "Error al actualizar el libro" });
+  }
+});
+
 module.exports = router;
