@@ -1,8 +1,10 @@
 const dns = require("node:dns"); //Node tenia problemas internos apuntando a 127.0.0.1 (localhost) y no resolviendo correctamente los dominios, por lo que se cambió a servidores DNS públicos (Cloudflare y Google) 
 dns.setServers(["1.1.1.1", "8.8.8.8"]); 
+
 const express = require("express");
 const cors = require("cors");
 const librosRoutes = require("./routes/libros.routes");
+const usuariosRoutes = require("./routes/usuarios.routes");
 
 require("dotenv").config();
 const conectarDB = require("./config/db");
@@ -14,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/libros", librosRoutes);
-
+app.use("/api/usuarios", usuariosRoutes);
 app.get("/", (req, res) => {
   res.send("API Biblioteca funcionando correctamente");
 });
