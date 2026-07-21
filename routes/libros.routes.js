@@ -30,7 +30,7 @@ router.post("/", async (req, res) => { //la ruta post lo que hace es recibe los 
 router.put("/:id", async (req, res) => {
   try {
     const libroActualizado = await Libro.findByIdAndUpdate(
-      req.params.id,
+      req.params.id, //busca el libro por su id y lo actualiza con los datos enviados en el cuerpo de la solicitud
       {
         titulo: req.body.titulo,
         autor: req.body.autor,
@@ -45,6 +45,19 @@ router.put("/:id", async (req, res) => {
     res.json(libroActualizado);
   } catch (error) {
     res.status(500).json({ mensaje: "Error al actualizar el libro" });
+  }
+});
+router.delete("/:id", async (req, res) => {
+  try {
+    const libroEliminado = await Libro.findByIdAndDelete(req.params.id);
+
+    if (!libroEliminado) {
+      return res.status(404).json({ mensaje: "Libro no encontrado" });
+    }
+
+    res.json({ mensaje: "Libro eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ mensaje: "Error al eliminar el libro" });
   }
 });
 
