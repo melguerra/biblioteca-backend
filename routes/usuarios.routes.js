@@ -19,4 +19,29 @@ router.post("/registro", async (req, res) => {  //crea una ruta post llamada reg
   }
 });
 
+router.post("/login", async (req, res) => {
+  try {
+
+    const { email, password } = req.body;
+
+    const usuario = await Usuario.findOne({ email });
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    if (usuario.password !== password) {
+      return res.status(401).json({ mensaje: "Contraseña incorrecta" });
+    }
+
+    res.json({
+      mensaje: "Login correcto",
+      usuario,
+    });
+
+  } catch (error) {
+    res.status(500).json({ mensaje: "Error al iniciar sesión" });
+  }
+});
+
 module.exports = router;

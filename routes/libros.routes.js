@@ -47,9 +47,10 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ mensaje: "Error al actualizar el libro" });
   }
 });
+
 router.delete("/:id", async (req, res) => {
   try {
-    const libroEliminado = await Libro.findByIdAndDelete(req.params.id);
+    const libroEliminado = await Libro.findByIdAndDelete(req.params.id); //el reqparams.id es el id del libro que se quiere eliminar, y findByIdAndDelete busca el libro por su id y lo elimina de la base de datos
 
     if (!libroEliminado) {
       return res.status(404).json({ mensaje: "Libro no encontrado" });
