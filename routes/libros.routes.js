@@ -1,5 +1,6 @@
 const express = require("express");
 const Libro = require("../models/Libro");
+const verificarToken = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => { //la ruta post lo que hace es recibe los datos enviados desde el cliente , crea un nuevo libro y lo guarda en la base de datos
+router.post("/", verificarToken, async (req, res) => { //verificarToken es un middleware que verifica si el token es válido antes de permitir la creación de un nuevo libro
   try {
     const nuevoLibro = new Libro({
       titulo: req.body.titulo,
@@ -48,7 +49,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verificarToken, async (req, res) => {
   try {
     const libroEliminado = await Libro.findByIdAndDelete(req.params.id); //el reqparams.id es el id del libro que se quiere eliminar, y findByIdAndDelete busca el libro por su id y lo elimina de la base de datos
 
